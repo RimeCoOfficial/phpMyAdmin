@@ -18,8 +18,30 @@ $cfg['blowfish_secret'] = '{^QP+-(3mlHy+Gd~FE3mN{gIATs^1lX+T=KVYv{ubK*U0V';
 $cfg['Servers'][$i]['host'] = !getenv('host') ? 'localhost' : getenv('host');
 ```
 
-OpsWorks App's Environment variable
+# OpsWorks
+### Stack
+**Name** | Postmaster
+| :--- | :--- |
+**Region** | US West (Oregon)
+**Default operating system** | Ubuntu 14.04 LTS
+**Hostname theme** | Greek Deities
 
-``` 
-host mydbinstance.qwhsdahdjauw.us-west-2.rds.amazonaws.com:3306
+### Layer
+Layer type | PHP App Server
+:--- | :---
+
+### App
+Name | phpMyAdmin
+:--- | :---
+Repository URL | https://github.com/RimeOfficial/phpMyAdmin
+Branch/Revision | master
+
+#### Environment Variables
+Key | Value
+--- | ---
+host | mydbinstance.qwhsdahdjauw.us-west-2.rds.amazonaws.com:3306
+
+# Web Access
+```
+http://instance_ip/phpmyadmin
 ```
