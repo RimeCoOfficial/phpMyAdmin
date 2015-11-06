@@ -39,7 +39,7 @@ Branch/Revision | master
 #### Environment Variables
 Key | Value
 --- | ---
-host | mydbinstance.qwhsdahdjauw.us-west-2.rds.amazonaws.com:3306
+host | mydbinstance.qwhsdahdjauw.us-west-2.rds.amazonaws.com
 
 # Web Access
 ```
