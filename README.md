@@ -54,7 +54,7 @@ Layer type | PHP App Server
 Name | phpMyAdmin
 :--- | :---
 Repository URL | https://github.com/RimeOfficial/phpMyAdmin
-Branch/Revision | 4.5.1
+Branch/Revision | master
 
 #### Environment Variables
 Key | Value
