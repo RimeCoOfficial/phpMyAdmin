@@ -78,7 +78,11 @@ function loadChildNodes(isNode, $expandElem, callback) {
                 callback(data);
             }
         } else if(data.redirect_flag == "1") {
-            window.location.href += '&session_expired=1';
+            if (window.location.href.indexOf('?') === -1) {
+                window.location.href += '?session_expired=1';
+            } else {
+                window.location.href += '&session_expired=1';
+            }
             window.location.reload();
         } else {
             var $throbber = $expandElem.find('img.throbber');
@@ -511,7 +515,9 @@ $(function () {
             }
         });
     });
+});
 
+AJAX.registerOnload('navigation.js', function () {
     // Check if session storage is supported
     if (isStorageSupported('sessionStorage')) {
         var storage = window.sessionStorage;
@@ -955,8 +961,8 @@ function PMA_navigationTreePagination($this) {
         }
     }
     $.post(url, params, function (data) {
-        PMA_ajaxRemoveMessage($msgbox);
         if (typeof data !== 'undefined' && data.success) {
+            PMA_ajaxRemoveMessage($msgbox);
             if (isDbSelector) {
                 var val = PMA_fastFilter.getSearchClause();
                 $('#pma_navigation_tree')
@@ -986,6 +992,7 @@ function PMA_navigationTreePagination($this) {
             }
         } else {
             PMA_ajaxShowMessage(data.error);
+            PMA_handleRedirectAndReload(data);
         }
         navTreeStateUpdate();
     });

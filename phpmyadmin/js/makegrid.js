@@ -943,10 +943,17 @@ function PMA_makegrid(t, enableResize, enableReorder, enableVisib, enableGridEdi
                         'curr_value' : curr_value
                     };
 
+                    // if the data is truncated, get the full data
+                    if ($td.is('.truncated')) {
+                        post_params.get_full_values = true;
+                        post_params.where_clause = PMA_urldecode(where_clause);
+                    }
+
                     g.lastXHR = $.post('sql.php', post_params, function (data) {
                         g.lastXHR = null;
                         $editArea.removeClass('edit_area_loading');
                         $editArea.append(data.select);
+                        $td.data('original_data', $(data.select).val().join());
                         $editArea.append('<div class="cell_edit_hint">' + g.cellEditHint + '</div>');
                     }); // end $.post()
 

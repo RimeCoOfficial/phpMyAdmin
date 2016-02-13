@@ -122,7 +122,14 @@ abstract class Statement
          */
         $built = array();
 
-        foreach (static::$CLAUSES as $clause) {
+        /**
+         * Statement's clauses.
+         *
+         * @var array
+         */
+        $clauses = $this->getClauses();
+
+        foreach ($clauses as $clause) {
             /**
              * The name of the clause.
              *
@@ -163,7 +170,6 @@ abstract class Statement
                 if (!empty($built[$field])) {
                     continue;
                 }
-
                 $built[$field] = true;
             }
 
@@ -224,6 +230,13 @@ abstract class Statement
                 break;
             }
 
+            // Checking if this closing bracket is the pair for a bracket
+            // outside the statement.
+            if (($token->value === ')') && ($parser->brackets > 0)) {
+                --$parser->brackets;
+                continue;
+            }
+
             // Only keywords are relevant here. Other parts of the query are
             // processed in the functions below.
             if ($token->type !== Token::TYPE_KEYWORD) {
@@ -237,7 +250,7 @@ abstract class Statement
 
             // Unions are parsed by the parser because they represent more than
             // one statement.
-            if ($token->value === 'UNION') {
+            if (($token->value === 'UNION') || ($token->value === 'UNION ALL')) {
                 break;
             }
 
@@ -361,6 +374,16 @@ abstract class Statement
     public function after(Parser $parser, TokensList $list, Token $token)
     {
 
+    }
+
+    /**
+     * Gets the clauses of this statement.
+     *
+     * @return array
+     */
+    public function getClauses()
+    {
+        return static::$CLAUSES;
     }
 
     /**

@@ -35,11 +35,14 @@ class Parser
     public static $STATEMENT_PARSERS = array(
 
         // MySQL Utility Statements
-        'EXPLAIN'           => 'SqlParser\\Statements\\ExplainStatement',
         'DESCRIBE'          => 'SqlParser\\Statements\\ExplainStatement',
+        'EXPLAIN'           => 'SqlParser\\Statements\\ExplainStatement',
+        'FLUSH'             => '',
+        'GRANT'             => '',
         'HELP'              => '',
-        'USE'               => '',
+        'SET PASSWORD'      => '',
         'STATUS'            => '',
+        'USE'               => '',
 
         // Table Maintenance Statements
         // https://dev.mysql.com/doc/refman/5.7/en/table-maintenance-sql.html
@@ -78,15 +81,16 @@ class Parser
 
         // Prepared Statements.
         // https://dev.mysql.com/doc/refman/5.7/en/sql-syntax-prepared-statements.html
-        'PREPARE'           => '',
+        'DEALLOCATE'        => '',
         'EXECUTE'           => '',
+        'PREPARE'           => '',
 
         // Transactional and Locking Statements
         // https://dev.mysql.com/doc/refman/5.7/en/commit.html
-        'START TRANSACTION' => 'SqlParser\\Statements\\TransactionStatement',
         'BEGIN'             => 'SqlParser\\Statements\\TransactionStatement',
         'COMMIT'            => 'SqlParser\\Statements\\TransactionStatement',
         'ROLLBACK'          => 'SqlParser\\Statements\\TransactionStatement',
+        'START TRANSACTION' => 'SqlParser\\Statements\\TransactionStatement',
     );
 
     /**
@@ -108,6 +112,10 @@ class Parser
             'field'             => 'options',
         ),
         'UNION'                 => array(
+            'class'             => 'SqlParser\\Components\\UnionKeyword',
+            'field'             => 'union',
+        ),
+        'UNION ALL'             => array(
             'class'             => 'SqlParser\\Components\\UnionKeyword',
             'field'             => 'union',
         ),
@@ -189,6 +197,10 @@ class Parser
             'field'             => 'join',
         ),
         'FULL JOIN'             => array(
+            'class'             => 'SqlParser\\Components\\JoinKeyword',
+            'field'             => 'join',
+        ),
+        'STRAIGHT_JOIN'         => array(
             'class'             => 'SqlParser\\Components\\JoinKeyword',
             'field'             => 'join',
         ),
@@ -297,6 +309,13 @@ class Parser
     public $statements = array();
 
     /**
+     * The number of opened brackets.
+     *
+     * @var int
+     */
+    public $brackets = 0;
+
+    /**
      * Constructor.
      *
      * @param string|UtfString|TokensList $list   The list of tokens to be parsed.
@@ -341,11 +360,11 @@ class Parser
         $lastStatement = null;
 
         /**
-         * Whether a union is parsed or not.
+         * Union's type or false for no union.
          *
-         * @var bool $inUnion
+         * @var bool|string $unionType
          */
-        $inUnion = false;
+        $unionType = false;
 
         /**
          * The index of the last token from the last statement.
@@ -380,6 +399,12 @@ class Parser
                 continue;
             }
 
+            // Counting the brackets around statements.
+            if ($token->value === '(') {
+                ++$this->brackets;
+                continue;
+            }
+
             // Statements can start with keywords only.
             // Comments, whitespaces, etc. are ignored.
             if ($token->type !== Token::TYPE_KEYWORD) {
@@ -396,8 +421,8 @@ class Parser
                 continue;
             }
 
-            if ($token->value === 'UNION') {
-                $inUnion = true;
+            if (($token->value === 'UNION') || ($token->value === 'UNION ALL')) {
+                $unionType = $token->value;
                 continue;
             }
 
@@ -444,7 +469,7 @@ class Parser
             $prevLastIdx = $list->idx;
 
             // Handles unions.
-            if (($inUnion)
+            if ((!empty($unionType))
                 && ($lastStatement instanceof SelectStatement)
                 && ($statement instanceof SelectStatement)
             ) {
@@ -459,7 +484,7 @@ class Parser
                  *
                  * @var SelectStatement $lastStatement
                  */
-                $lastStatement->union[] = $statement;
+                $lastStatement->union[] = array($unionType, $statement);
 
                 // if there are no no delimiting brackets, the `ORDER` and
                 // `LIMIT` keywords actually belong to the first statement.
@@ -472,7 +497,7 @@ class Parser
                 // union ends.
                 $lastStatement->last = $statement->last;
 
-                $inUnion = false;
+                $unionType = false;
                 continue;
             }
 

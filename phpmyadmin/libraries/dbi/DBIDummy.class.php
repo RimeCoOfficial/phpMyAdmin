@@ -515,7 +515,7 @@ $GLOBALS['dummy_queries'] = array(
             . "(SELECT DB_first_level FROM ( SELECT DISTINCT "
             . "SUBSTRING_INDEX(SCHEMA_NAME, '_', 1) DB_first_level "
             . "FROM INFORMATION_SCHEMA.SCHEMATA WHERE TRUE ) t ORDER BY "
-            . "DB_first_level ASC LIMIT 0, 100) t2 WHERE 1 = LOCATE("
+            . "DB_first_level ASC LIMIT 0, 100) t2 WHERE TRUE AND 1 = LOCATE("
             . "CONCAT(DB_first_level, '_'), CONCAT(SCHEMA_NAME, '_')) "
             . "ORDER BY SCHEMA_NAME ASC",
         'result' => array(
@@ -588,24 +588,23 @@ $GLOBALS['dummy_queries'] = array(
     ),
     array(
         'query' => 'DELETE FROM `mysql`.`db` WHERE `host` = "" '
-            . 'AND `Db` = "" AND `User` = "" LIMIT 1',
+            . 'AND `Db` = "" AND `User` = ""',
         'result' => true
     ),
     array(
         'query' => 'DELETE FROM `mysql`.`columns_priv` WHERE '
-            . '`host` = "" AND `Db` = "" AND `User` = "" LIMIT 1',
+            . '`host` = "" AND `Db` = "" AND `User` = ""',
         'result' => true
     ),
     array(
         'query' => 'DELETE FROM `mysql`.`tables_priv` WHERE '
-            . '`host` = "" AND `Db` = "" AND `User` = "" AND Table_name = "" '
-            . 'LIMIT 1',
+            . '`host` = "" AND `Db` = "" AND `User` = "" AND Table_name = ""',
         'result' => true
     ),
     array(
         'query' => 'DELETE FROM `mysql`.`procs_priv` WHERE '
             . '`host` = "" AND `Db` = "" AND `User` = "" AND `Routine_name` = "" '
-            . 'AND `Routine_type` = "" LIMIT 1',
+            . 'AND `Routine_type` = ""',
         'result' => true
     ),
     array(

@@ -93,6 +93,27 @@ $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
 });
 
 /**
+ * Hanle redirect and reload flags send as part of AJAX requests
+ *
+ * @param data ajax response data
+ */
+function PMA_handleRedirectAndReload(data) {
+    if (parseInt(data.redirect_flag) == 1) {
+        // add one more GET param to display session expiry msg
+        if (window.location.href.indexOf('?') === -1) {
+            window.location.href += '?session_expired=1';
+        } else {
+            window.location.href += '&session_expired=1';
+        }
+        window.location.reload();
+    } else if (parseInt(data.reload_flag) == 1) {
+        // remove the token param and reload
+        window.location.href = window.location.href.replace(/&?token=[^&#]*/g, "");
+        window.location.reload();
+    }
+}
+
+/**
  * Creates an SQL editor which supports auto completing etc.
  *
  * @param $textarea jQuery object wrapping the textarea to be made the editor
@@ -298,14 +319,31 @@ function suggestPassword(passwd_form)
     // restrict the password to just letters and numbers to avoid problems:
     // "editors and viewers regard the password as multiple words and
     // things like double click no longer work"
-    var pwchars = "abcdefhjmnpqrstuvwxyz23456789ABCDEFGHJKLMNPQRSTUVWYXZ";
+    var pwchars = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWYXZ";
     var passwordlength = 16;    // do we want that to be dynamic?  no, keep it simple :)
     var passwd = passwd_form.generated_pw;
+    var randomWords = new Int32Array(passwordlength);
+
     passwd.value = '';
 
-    for (var i = 0; i < passwordlength; i++) {
-        passwd.value += pwchars.charAt(Math.floor(Math.random() * pwchars.length));
+    // First we're going to try to use a built-in CSPRNG
+    if (window.crypto && window.crypto.getRandomValues) {
+        window.crypto.getRandomValues(randomWords);
     }
+    // Because of course IE calls it msCrypto instead of being standard
+    else if (window.msCrypto && window.msCrypto.getRandomValues) {
+        window.msCrypto.getRandomValues(randomWords);
+    } else {
+        // Fallback to Math.random
+        for (var i = 0; i < passwordlength; i++) {
+            randomWords[i] = Math.floor(Math.random() * pwchars.length);
+        }
+    }
+
+    for (var i = 0; i < passwordlength; i++) {
+        passwd.value += pwchars.charAt(Math.abs(randomWords[i]) % pwchars.length);
+    }
+
     passwd_form.text_pma_pw.value = passwd.value;
     passwd_form.text_pma_pw2.value = passwd.value;
     return true;
@@ -465,6 +503,9 @@ function PMA_addDatepicker($this_element, type, options)
         onClose: function (dateText, dp_inst) {
             // The value is no more from the date picker
             $this_element.data('comes_from', '');
+            if (typeof $this_element.data('datepicker') !== 'undefined') {
+                $this_element.data('datepicker').inline = false;
+            }
         }
     };
     if (type == "datetime" || type == "timestamp") {
@@ -1977,23 +2018,19 @@ function bindCodeMirrorToInlineEditor() {
             codemirror_inline_editor.refresh();
             codemirror_inline_editor.focus();
             $(codemirror_inline_editor.getWrapperElement())
-                .bind('keydown', catchKeypressesFromSqlTextboxes);
+                .bind('keydown', catchKeypressesFromSqlInlineEdit);
         } else {
             $inline_editor
                 .focus()
-                .bind('keydown', catchKeypressesFromSqlTextboxes);
+                .bind('keydown', catchKeypressesFromSqlInlineEdit);
         }
     }
 }
 
-function catchKeypressesFromSqlTextboxes(event) {
+function catchKeypressesFromSqlInlineEdit(event) {
     // ctrl-enter is 10 in chrome and ie, but 13 in ff
     if (event.ctrlKey && (event.keyCode == 13 || event.keyCode == 10)) {
-        if ($('#sql_query_edit').length > 0) {
-            $("#sql_query_edit_save").trigger('click');
-        } else if ($('#sqlquery').length > 0) {
-            $("#button_submit_query").trigger('click');
-        }
+        $("#sql_query_edit_save").trigger('click');
     }
 }
 
@@ -4196,13 +4233,10 @@ AJAX.registerOnload('functions.js', function () {
         if (typeof CodeMirror != 'undefined') {
             codemirror_editor = PMA_getSQLEditor($elm);
             codemirror_editor.focus();
-            $(codemirror_editor.getWrapperElement())
-                .bind('keydown', catchKeypressesFromSqlTextboxes);
             codemirror_editor.on("blur", updateQueryParameters);
         } else {
             // without codemirror
             $elm.focus()
-                .bind('keydown', catchKeypressesFromSqlTextboxes)
                 .bind('blur', updateQueryParameters);
         }
     }
@@ -4299,7 +4333,10 @@ function PMA_getCellValue(td) {
     var $td = $(td);
     if ($td.is('.null')) {
         return '';
-    } else if (! $td.is('.to_be_saved') && $td.data('original_data')) {
+    } else if ((! $td.is('.to_be_saved')
+        || $td.is('.set'))
+        && $td.data('original_data')
+    ) {
         return $td.data('original_data');
     } else {
         return $td.text();

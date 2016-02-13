@@ -43,6 +43,7 @@ if (!defined('TESTSUITE')) {
     $post_params = array(
             'db',
             'table',
+            'what',
             'single_table',
             'export_type',
             'export_method',
@@ -163,10 +164,11 @@ if (!defined('TESTSUITE')) {
     }
 
     $table = $GLOBALS['table'];
-    // sanitize this parameter which will be used below in a file inclusion
-    $what = PMA_securePath($_POST['what']);
 
     PMA_Util::checkParameters(array('what', 'export_type'));
+
+    // sanitize this parameter which will be used below in a file inclusion
+    $what = PMA_securePath($_POST['what']);
 
     // export class instance, not array of properties, as before
     /* @var $export_plugin ExportPlugin */
@@ -211,7 +213,7 @@ if (!defined('TESTSUITE')) {
     $separate_files = '';
 
     // Is it a quick or custom export?
-    if ($_REQUEST['quick_or_custom'] == 'quick') {
+    if (isset($_REQUEST['quick_or_custom']) && $_REQUEST['quick_or_custom'] == 'quick') {
         $quick_export = true;
     } else {
         $quick_export = false;
@@ -396,14 +398,14 @@ if (!defined('TESTSUITE')) {
     // Fake loop just to allow skip of remain of this code by break, I'd really
     // need exceptions here :-)
     do {
+        // Re - initialize
+        $dump_buffer = '';
+        $dump_buffer_len = 0;
 
         // Add possibly some comments to export
         if (! $export_plugin->exportHeader()) {
             break;
         }
-        // Re - initialize
-        $dump_buffer = '';
-        $dump_buffer_len = 0;
 
         // Will we need relation & co. setup?
         $do_relation = isset($GLOBALS[$what . '_relation']);

@@ -186,6 +186,7 @@ class Expression extends Component
             if (($token->type === Token::TYPE_KEYWORD)
                 && ($token->flags & Token::FLAG_KEYWORD_RESERVED)
                 && ($token->value !== 'DUAL')
+                && ($token->value !== 'NULL')
             ) {
                 // Keywords may be found only between brackets.
                 if ($brackets === 0) {
@@ -230,8 +231,9 @@ class Expression extends Component
                             break;
                         }
                     } elseif ($brackets < 0) {
-                        $parser->error(__('Unexpected closing bracket.'), $token);
-                        $brackets = 0;
+                        // $parser->error(__('Unexpected closing bracket.'), $token);
+                        // $brackets = 0;
+                        break;
                     }
                 } elseif ($token->value === ',') {
                     if ($brackets === 0) {
