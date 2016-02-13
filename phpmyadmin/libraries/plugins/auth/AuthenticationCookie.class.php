@@ -41,7 +41,7 @@ if (! function_exists('openssl_encrypt')
     require PHPSECLIB_INC_DIR . '/Crypt/Base.php';
     require PHPSECLIB_INC_DIR . '/Crypt/Rijndael.php';
     require PHPSECLIB_INC_DIR . '/Crypt/AES.php';
-    require PHPSECLIB_INC_DIR . '/Crypt/Random.php';
+    require_once PHPSECLIB_INC_DIR . '/Crypt/Random.php';
 }
 
 /**
@@ -444,6 +444,11 @@ class AuthenticationCookie extends AuthenticationPlugin
             PMA_Util::cacheUnset('db_to_create');
             PMA_Util::cacheUnset('dbs_where_create_table_allowed');
             PMA_Util::cacheUnset('dbs_to_test');
+            PMA_Util::cacheUnset('db_priv');
+            PMA_Util::cacheUnset('col_priv');
+            PMA_Util::cacheUnset('table_priv');
+            PMA_Util::cacheUnset('proc_priv');
+
             $GLOBALS['no_activity'] = true;
             $this->authFails();
             if (! defined('TESTSUITE')) {

@@ -14,7 +14,8 @@
  * This is needed for cookie based authentication to encrypt password in
  * cookie
  */
-$cfg['blowfish_secret'] = '{^QP+-(3mlHy+Gd~FE3mN{gIATs^1lX+T=KVYv{ubK*U0V'; /* YOU MUST FILL IN THIS FOR COOKIE AUTH! */
+// $cfg['blowfish_secret'] = ''; /* YOU MUST FILL IN THIS FOR COOKIE AUTH! */
+$cfg['blowfish_secret'] = '{^QP+-(3mlHy+Gd~FE3mN{gIATs^1lX+T=KVYv{ubK*U0V';
 
 /**
  * Servers configuration
@@ -28,6 +29,7 @@ $i++;
 /* Authentication type */
 $cfg['Servers'][$i]['auth_type'] = 'cookie';
 /* Server parameters */
+// $cfg['Servers'][$i]['host'] = 'localhost';
 $cfg['Servers'][$i]['host'] = !getenv('host') ? 'localhost' : getenv('host');
 $cfg['Servers'][$i]['connect_type'] = 'tcp';
 $cfg['Servers'][$i]['compress'] = false;

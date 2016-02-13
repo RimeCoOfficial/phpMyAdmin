@@ -106,7 +106,7 @@ class SelectStatement extends Statement
         'LIMIT'                         => array('LIMIT',               3),
         'PROCEDURE'                     => array('PROCEDURE',           3),
         'INTO'                          => array('INTO',                3),
-        'UNION'                         => array('UNION',               3),
+        'UNION'                         => array('UNION',               1),
         // These are available only when `UNION` is present.
         // 'ORDER BY'                      => array('ORDER BY',    3),
         // 'LIMIT'                         => array('LIMIT',       3),
@@ -195,4 +195,25 @@ class SelectStatement extends Statement
      * @var SelectStatement[]
      */
     public $union = array();
+
+    /**
+     * Gets the clauses of this statement.
+     *
+     * @return array
+     */
+    public function getClauses()
+    {
+        // This is a cheap fix for `SELECT` statements that contain `UNION`.
+        // The `ORDER BY` and `LIMIT` clauses should be at the end of the
+        // statement.
+        if (!empty($this->union)) {
+            $clauses = static::$CLAUSES;
+            unset($clauses['ORDER BY']);
+            unset($clauses['LIMIT']);
+            $clauses['ORDER BY'] = array('ORDER BY', 3);
+            $clauses['LIMIT'] = array('LIMIT', 3);
+            return $clauses;
+        }
+        return static::$CLAUSES;
+    }
 }

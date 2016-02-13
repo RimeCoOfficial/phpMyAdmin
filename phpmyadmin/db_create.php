@@ -17,6 +17,10 @@ if (! PMA_DRIZZLE) {
 }
 require 'libraries/build_html_for_db.lib.php';
 
+if (! isset($_POST['new_db'])) {
+    PMA_Util::checkParameters(array('new_db'));
+}
+
 /**
  * Defines the url to return to in case of error in a sql statement
  */
@@ -138,6 +142,8 @@ if (! $result) {
             . urlencode($current['SCHEMA_NAME'])
         );
     } else {
-        include_once '' . $cfg['DefaultTabDatabase'];
+        include_once '' .  PMA_Util::getScriptNameForOption(
+                $GLOBALS['cfg']['DefaultTabDatabase'], 'database'
+            );
     }
 }
