@@ -1,4 +1,4 @@
-# phpMyAdmin-4.5.1 Config
+# phpMyAdmin Config
 
 **[phpmyadmin/config.inc.php](https://github.com/RimeOfficial/phpMyAdmin-4.5.1/blob/master/phpmyadmin/config.inc.php)**
 
