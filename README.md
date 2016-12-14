@@ -21,7 +21,7 @@ $cfg['blowfish_secret'] = '{^QP+-(3mlHy+Gd~FE3mN{gIATs^1lX+T=KVYv{ubK*U0V';
 
 ## Host
 
-**[phpmyadmin/config.inc.php#L313](https://github.com/RimeOfficial/phpMyAdmin/blob/master/phpmyadmin/config.inc.php#L33)**
+**[phpmyadmin/config.inc.php#L33](https://github.com/RimeOfficial/phpMyAdmin/blob/master/phpmyadmin/config.inc.php#L33)**
 
 ``` php
 /**
