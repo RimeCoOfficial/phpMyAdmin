@@ -30,7 +30,7 @@ $i++;
 $cfg['Servers'][$i]['auth_type'] = 'cookie';
 /* Server parameters */
 // $cfg['Servers'][$i]['host'] = 'localhost';
-$cfg['Servers'][$i]['host'] = !getenv('host') ? 'localhost' : getenv('host');
+$cfg['Servers'][$i]['host'] = !empty($_SERVER['RDS_HOSTNAME']) ? 'localhost' : $_SERVER['RDS_HOSTNAME'];
 $cfg['Servers'][$i]['connect_type'] = 'tcp';
 $cfg['Servers'][$i]['compress'] = false;
 $cfg['Servers'][$i]['AllowNoPassword'] = false;

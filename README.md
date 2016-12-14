@@ -24,44 +24,7 @@ $cfg['blowfish_secret'] = '{^QP+-(3mlHy+Gd~FE3mN{gIATs^1lX+T=KVYv{ubK*U0V';
 **[phpmyadmin/config.inc.php#L33](https://github.com/RimeOfficial/phpMyAdmin/blob/master/phpmyadmin/config.inc.php#L33)**
 
 ``` php
-/**
- * First server
- */
-$i++;
-/* Authentication type */
-$cfg['Servers'][$i]['auth_type'] = 'cookie';
 /* Server parameters */
 // $cfg['Servers'][$i]['host'] = 'localhost';
-$cfg['Servers'][$i]['host'] = !getenv('host') ? 'localhost' : getenv('host');
-$cfg['Servers'][$i]['connect_type'] = 'tcp';
-$cfg['Servers'][$i]['compress'] = false;
-$cfg['Servers'][$i]['AllowNoPassword'] = false;
-```
-
-# OpsWorks
-### Stack
-**Name** | Postmaster
-| :--- | :--- |
-**Region** | US West (Oregon)
-**Default operating system** | Ubuntu 14.04 LTS
-**Hostname theme** | Greek Deities
-
-### Layer
-Layer type | PHP App Server
-:--- | :---
-
-### App
-Name | phpMyAdmin
-:--- | :---
-Repository URL | https://github.com/RimeOfficial/phpMyAdmin
-Branch/Revision | master
-
-#### Environment Variables
-Key | Value
---- | ---
-host | mydbinstance.qwhsdahdjauw.us-west-2.rds.amazonaws.com
-
-# Web Access
-```
-http://instance_ip/phpmyadmin
+$cfg['Servers'][$i]['host'] = !empty($_SERVER['RDS_HOSTNAME']) ? 'localhost' : $_SERVER['RDS_HOSTNAME'];
 ```
