@@ -26,8 +26,33 @@ $cfg['blowfish_secret'] = '{^QP+-(3mlHy+Gd~FE3mN{gIATs^1lX+T=KVYv{ubK*U0V';
 ``` php
 /* Server parameters */
 // $cfg['Servers'][$i]['host'] = 'localhost';
-$cfg['Servers'][$i]['host'] = !empty($_SERVER['RDS_HOSTNAME']) ? $_SERVER['RDS_HOSTNAME'] : 'localhost';
+$cfg['Servers'][$i]['host'] = !getenv('host') ? 'localhost' : getenv('host');
 ```
 
-## Reference
-[Build a WordPress Website on Amazon Web Services](http://docs.aws.amazon.com/getting-started/latest/wordpress/hosting-wordpress-on-aws.html)
+# OpsWorks
+### Stack
+**Name** | Postmaster
+| :--- | :--- |
+**Region** | US West (Oregon)
+**Default operating system** | Ubuntu 14.04 LTS
+**Hostname theme** | Greek Deities
+
+### Layer
+Layer type | PHP App Server
+:--- | :---
+
+### App
+Name | phpMyAdmin
+:--- | :---
+Repository URL | https://github.com/RimeOfficial/phpMyAdmin
+Branch/Revision | master
+
+#### Environment Variables
+Key | Value
+--- | ---
+host | mydbinstance.qwhsdahdjauw.us-west-2.rds.amazonaws.com
+
+# Web Access
+```
+http://instance_ip/phpmyadmin
+```
