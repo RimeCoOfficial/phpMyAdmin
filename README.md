@@ -53,7 +53,7 @@ Branch/Revision | master
 Key | Value
 --- | ---
 host | mydbinstance.qwhsdahdjauw.us-west-2.rds.amazonaws.com
-blowfish | ,3y!~<HKYL ehXi|+|??}UQzl430`/}{]Zvt|E|]4/v^OslErTfylms-FMMp1!UO
+blowfish | api.wordpress.org/secret-key/1.1/salt
 
 # Web Access
 ```
