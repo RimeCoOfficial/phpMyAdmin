@@ -16,8 +16,10 @@ http://www.question-defense.com/tools/phpmyadmin-blowfish-secret-generator
  * cookie
  */
 // $cfg['blowfish_secret'] = ''; /* YOU MUST FILL IN THIS FOR COOKIE AUTH! */
-$cfg['blowfish_secret'] = '{^QP+-(3mlHy+Gd~FE3mN{gIATs^1lX+T=KVYv{ubK*U0V';
+$cfg['blowfish_secret'] = getenv('blowfish');
 ```
+
+https://api.wordpress.org/secret-key/1.1/salt/
 
 ## Host
 
@@ -51,6 +53,7 @@ Branch/Revision | master
 Key | Value
 --- | ---
 host | mydbinstance.qwhsdahdjauw.us-west-2.rds.amazonaws.com
+blowfish | ,3y!~<HKYL ehXi|+|??}UQzl430`/}{]Zvt|E|]4/v^OslErTfylms-FMMp1!UO
 
 # Web Access
 ```
