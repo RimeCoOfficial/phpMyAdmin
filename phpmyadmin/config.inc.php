@@ -15,7 +15,7 @@
  * cookie. Needs to be 32 chars long.
  */
 // $cfg['blowfish_secret'] = ''; /* YOU MUST FILL IN THIS FOR COOKIE AUTH! */
- $cfg['blowfish_secret'] = '{^QP+-(3mlHy+Gd~FE3mN{gIATs^1lX+T=KVYv{ubK*U0V';
+ $cfg['blowfish_secret'] = $_SERVER['BLOWFISH'];
 
 /**
  * Servers configuration
