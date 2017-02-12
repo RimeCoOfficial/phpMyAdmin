@@ -4,10 +4,6 @@
 
 ## Blowfish
 
-http://www.question-defense.com/tools/phpmyadmin-blowfish-secret-generator
-
-> Enter the randomly generated set of characters below into your phpMyAdmin config.inc.php file for the $cfg[‘blowfish_secret’] variable. You can technically use any phrase you like for the blowfish_secret variable however the below makes it easy so you don’t have to think of one. Every time you refresh this page a new $cfg[‘blowfish_secret’] will be randomly generated.
-
 **[phpmyadmin/config.inc.php#L18](phpmyadmin/config.inc.php#L18)**
 
 ``` php
