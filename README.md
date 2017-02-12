@@ -1,6 +1,6 @@
 # phpMyAdmin Config
 
-**[phpmyadmin/config.inc.php](https://github.com/RimeOfficial/phpMyAdmin/blob/master/phpmyadmin/config.inc.php)**
+**[phpmyadmin/config.inc.php](phpmyadmin/config.inc.php)**
 
 ## Blowfish
 
@@ -8,7 +8,7 @@ http://www.question-defense.com/tools/phpmyadmin-blowfish-secret-generator
 
 > Enter the randomly generated set of characters below into your phpMyAdmin config.inc.php file for the $cfg[‘blowfish_secret’] variable. You can technically use any phrase you like for the blowfish_secret variable however the below makes it easy so you don’t have to think of one. Every time you refresh this page a new $cfg[‘blowfish_secret’] will be randomly generated.
 
-**[phpmyadmin/config.inc.php#L18](https://github.com/RimeOfficial/phpMyAdmin/blob/master/phpmyadmin/config.inc.php#L18)**
+**[phpmyadmin/config.inc.php#L18](phpmyadmin/config.inc.php#L18)**
 
 ``` php
 /**
@@ -19,7 +19,7 @@ http://www.question-defense.com/tools/phpmyadmin-blowfish-secret-generator
 $cfg['blowfish_secret'] = getenv('blowfish');
 ```
 
-https://api.wordpress.org/secret-key/1.1/salt/
+http://md5.my-addr.com/online_random_md5_hash_generator-and-md5_random_hash.php
 
 ## Host
 
@@ -57,5 +57,5 @@ blowfish | api.wordpress.org/secret-key/1.1/salt
 
 # Web Access
 ```
-http://instance_ip/phpmyadmin
+http://instance.ip/phpmyadmin
 ```
