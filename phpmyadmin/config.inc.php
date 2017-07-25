@@ -15,7 +15,7 @@
  * cookie. Needs to be 32 chars long.
  */
 // $cfg['blowfish_secret'] = ''; /* YOU MUST FILL IN THIS FOR COOKIE AUTH! */
- $cfg['blowfish_secret'] = $_SERVER['BLOWFISH'];
+$cfg['blowfish_secret'] = $_SERVER['BLOWFISH'];
 
 /**
  * Servers configuration
@@ -31,8 +31,6 @@ $cfg['Servers'][$i]['auth_type'] = 'cookie';
 /* Server parameters */
 // $cfg['Servers'][$i]['host'] = 'localhost';
 $cfg['Servers'][$i]['host'] = !empty($_SERVER['RDS_HOSTNAME']) ? $_SERVER['RDS_HOSTNAME'] : 'localhost';
-
-$cfg['Servers'][$i]['connect_type'] = 'tcp';
 $cfg['Servers'][$i]['compress'] = false;
 $cfg['Servers'][$i]['AllowNoPassword'] = false;
 
