@@ -29,7 +29,7 @@ $cfg['Servers'][$i]['host'] = !getenv('host') ? 'localhost' : getenv('host');
 
 # OpsWorks
 ### Stack
-**Name** | Postmaster
+**Name** | phpMyAdmin
 | :--- | :--- |
 **Region** | US West (Oregon)
 **Default operating system** | Ubuntu 14.04 LTS
