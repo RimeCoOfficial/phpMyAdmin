@@ -15,7 +15,7 @@
  * cookie. Needs to be 32 chars long.
  */
 // $cfg['blowfish_secret'] = ''; /* YOU MUST FILL IN THIS FOR COOKIE AUTH! */
- $cfg['blowfish_secret'] = getenv('blowfish');
+$cfg['blowfish_secret'] = getenv('blowfish');
 
 /**
  * Servers configuration
@@ -32,7 +32,6 @@ $cfg['Servers'][$i]['auth_type'] = 'cookie';
 // $cfg['Servers'][$i]['host'] = 'localhost';
 $cfg['Servers'][$i]['host'] = !getenv('host') ? 'localhost' : getenv('host');
 
-$cfg['Servers'][$i]['connect_type'] = 'tcp';
 $cfg['Servers'][$i]['compress'] = false;
 $cfg['Servers'][$i]['AllowNoPassword'] = false;
 
