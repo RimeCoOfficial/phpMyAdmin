@@ -1,6 +1,6 @@
 # phpMyAdmin Config
 
-**[phpmyadmin/config.inc.php](phpmyadmin/config.inc.php)**
+**[phpmyadmin/config.inc.php](/phpmyadmin/config.inc.php)**
 
 ## Blowfish
 
@@ -12,7 +12,7 @@
  * cookie
  */
 // $cfg['blowfish_secret'] = ''; /* YOU MUST FILL IN THIS FOR COOKIE AUTH! */
-$cfg['blowfish_secret'] = getenv('blowfish');
+$cfg['blowfish_secret'] = $_SERVER['BLOWFISH'];
 ```
 
 http://md5.my-addr.com/online_random_md5_hash_generator-and-md5_random_hash.php
@@ -27,31 +27,5 @@ http://md5.my-addr.com/online_random_md5_hash_generator-and-md5_random_hash.php
 $cfg['Servers'][$i]['host'] = !getenv('host') ? 'localhost' : getenv('host');
 ```
 
-# OpsWorks
-### Stack
-**Name** | phpMyAdmin
-| :--- | :--- |
-**Region** | US West (Oregon)
-**Default operating system** | Ubuntu 14.04 LTS
-**Hostname theme** | Greek Deities
-
-### Layer
-Layer type | PHP App Server
-:--- | :---
-
-### App
-Name | phpMyAdmin
-:--- | :---
-Repository URL | https://github.com/RimeOfficial/phpMyAdmin
-Branch/Revision | master
-
-#### Environment Variables
-Key | Value
---- | ---
-host | mydbinstance.qwhsdahdjauw.us-west-2.rds.amazonaws.com
-blowfish | random_md5_hash
-
-# Web Access
-```
-http://instance.ip/phpmyadmin
-```
+## Reference
+[Build a WordPress Website on Amazon Web Services](http://docs.aws.amazon.com/getting-started/latest/wordpress/hosting-wordpress-on-aws.html)
