@@ -24,7 +24,7 @@ http://md5.my-addr.com/online_random_md5_hash_generator-and-md5_random_hash.php
 ``` php
 /* Server parameters */
 // $cfg['Servers'][$i]['host'] = 'localhost';
-$cfg['Servers'][$i]['host'] = !getenv('host') ? 'localhost' : getenv('host');
+$cfg['Servers'][$i]['host'] = !empty($_SERVER['RDS_HOSTNAME']) ? $_SERVER['RDS_HOSTNAME'] : 'localhost';
 ```
 
 ## Reference
